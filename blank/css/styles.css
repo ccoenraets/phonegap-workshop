@@ -1,0 +1,261 @@
+.search-bar {
+    height: 34px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 9px;
+    margin-bottom: 6px;
+    border-bottom: solid 1px #666;
+}
+
+#searchKey {
+    width: 100%;
+}
+
+.details {
+    padding: 8px;
+}
+
+.details h1 {
+    font-size: 20px;
+    padding: 0px;
+    margin-top: 10px;
+    margin-bottom: 4px;
+}
+
+#location {
+    font-size: 14px;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #fff;
+    overflow: hidden;
+    position: relative;
+}
+
+.header {
+    background: #b2bbca url(images/navbar-bg.png) repeat-x;
+    -webkit-background-size: 1px 44px;
+    -moz-background-size: 1px 44px;
+    -ms-background-size: 1px 44px;
+    -o-background-size: 1px 44px;
+    background-size: 1px 44px;
+    height: 44px;
+    line-height: 44px;
+    width: 100%;
+    color: #fff;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+.header-button {
+    position: absolute;
+    top: 0;
+    padding: 7px 5px;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    line-height: 1em;
+}
+
+.header-button button {
+    pointer-events: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    min-width: 50px;
+    height: 30px;
+    line-height: 25px;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+    color: #fff;
+    text-shadow: 0 -1px rgba(0, 0, 0, .6);
+    padding: 0 4px;
+    margin: 0;
+    text-decoration: none;
+    border-width: 2px 5px;
+    -webkit-border-image: url(images/button.png) 4 10 4 10;
+    -moz-border-image: url(images/button.png) 4 10 4 10;
+    -ms-border-image: url(images/button.png) 4 10 4 10;
+    -o-border-image: url(images/button.png) 4 10 4 10;
+    background: transparent url(images/button-active.png) no-repeat;
+    -webkit-background-size: 0 0;
+    -moz-background-size: 0 0;
+    -ms-background-size: 0 0;
+    -o-background-size: 0 0;
+    background-size: 0 0;
+}
+
+.header-button-icon button {
+    min-width: 0;
+}
+
+.header-button-icon button img {
+    vertical-align: text-bottom;
+}
+
+.header-button.tappable-active button {
+    -webkit-border-image: url(images/button-active.png) 4 10 4 10;
+    -moz-border-image: url(images/button-active.png) 4 10 4 10;
+    -ms-border-image: url(images/button-active.png) 4 10 4 10;
+    -o-border-image: url(images/button-active.png) 4 10 4 10;
+}
+
+.header-back-button button {
+    padding: 0 4px 0 0;
+    border-width: 2px 4px 2px 13px;
+    -webkit-border-image: url(images/back-button.png) 4 8 4 26;
+    -moz-border-image: url(images/back-button.png) 4 8 4 26;
+    -ms-border-image: url(images/back-button.png) 4 8 4 26;
+    -o-border-image: url(images/back-button.png) 4 8 4 26;
+    background-image: url(images/back-button-active.png);
+}
+
+.header-back-button.tappable-active button {
+    -webkit-border-image: url(images/back-button-active.png) 4 8 4 26;
+    -moz-border-image: url(images/back-button-active.png) 4 8 4 26;
+    -ms-border-image: url(images/back-button-active.png) 4 8 4 26;
+    -o-border-image: url(images/back-button-active.png) 4 8 4 26;
+}
+
+.header-button-left {
+    left: 0;
+}
+
+.header-button-right {
+    right: 0;
+}
+
+.header h1 {
+    padding: 0;
+    text-align: center;
+    font-size: 20px;
+    text-shadow: 0 -1px rgba(0, 0, 0, .4);
+    margin: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-flex: 1;
+}
+
+.scroll {
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-flex: 1;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    background-color: #e2e7ed;
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    box-orient: vertical;
+    position: absolute;
+    top: 88px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
+
+.scroll.striped {
+    background-color: #cbd2d8;
+    background-image: -webkit-gradient(linear, left top, right top, from(#c5ccd4), color-stop(0.714, #c5ccd4), color-stop(0.714, #cbd2d8), to(#cbd2d8));
+    background-image: -webkit-linear-gradient(left, #c5ccd4, #c5ccd4 71.4%, #cbd2d8 71.5%, #cbd2d8);
+    background-image: -moz-linear-gradient(left, #c5ccd4, #c5ccd4 71.4%, #cbd2d8 71.5%, #cbd2d8);
+    background-image: -ms-linear-gradient(left, #c5ccd4, #c5ccd4 71.4%, #cbd2d8 71.5%, #cbd2d8);
+    background-image: -o-linear-gradient(left, #c5ccd4, #c5ccd4 71.4%, #cbd2d8 71.5%, #cbd2d8);
+    background-image: linear-gradient(left, #c5ccd4, #c5ccd4 71.4%, #cbd2d8 71.5%, #cbd2d8);
+    -webkit-background-size: 7px 1px;
+    -moz-background-size: 7px 1px;
+    -ms-background-size: 7px 1px;
+    -o-background-size: 7px 1px;
+    background-size: 7px 1px;
+}
+
+.tableview {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.tableview li {
+    display: block;
+    border-top: 1px solid #e0e0e0;
+    padding: 10px;
+}
+
+.tableview-links li {
+    padding: 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+    width: 100%;
+}
+
+.tableview-links li>a {
+    font-size: 15px;
+    line-height: 1.3em;
+    color: #000;
+    display: block;
+    padding: 5px;
+    text-decoration: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+    width: 100%;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    box-flex: 1;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#4286f5), to(#194fdb));
+    background-image: -webkit-linear-gradient(top, #4286f5, #194fdb);
+    background-image: -moz-linear-gradient(top, #4286f5, #194fdb);
+    background-image: -ms-linear-gradient(top, #4286f5, #194fdb);
+    background-image: -o-linear-gradient(top, #4286f5, #194fdb);
+    background-image: linear-gradient(top, #4286f5, #194fdb);
+    background-position: -10px 0;
+    background-repeat: no-repeat;
+    -webkit-background-size: 10px 100%;
+    -moz-background-size: 10px 100%;
+    -ms-background-size: 10px 100%;
+    -o-background-size: 10px 100%;
+    background-size: 10px 100%;
+}
+
+.tableview-links li>a * {
+    pointer-events: none;
+}
+
+.tableview-links li>a.tappable-active {
+    color: #fff;
+    background-color: #4286f5;
+    background-repeat: repeat-x;
+}
+
+.tableview-links li>a.tappable-active * {
+    color: #fff;
+}
+
+#content {
+    position: absolute;
+    background: #ddd;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
