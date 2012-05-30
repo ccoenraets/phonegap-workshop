@@ -25,7 +25,7 @@ Download the zip file for this repository, and expand it on your file system.
 
 ## Bonus Exercise ##
 
-Based on the code available [here](), modify your own version of the application to highlight the selected row in the employee list, and to cache the HomeView.
+Based on the code available [here](https://github.com/ccoenraets/phonegap-workshop/blob/master/final/js/main.js), modify your own version of the application to highlight the selected row in the employee list, and to cache the HomeView.
 
 ## Build ##
 
