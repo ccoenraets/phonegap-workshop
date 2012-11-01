@@ -1,29 +1,21 @@
 <html>
 <head>
-    <title></title>
-    <link href="css/styles.css" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
 </head>
 <body>
 
-<div id="content">
-
-    <div class="header">
-        <a href="#" class="header-button header-button-left header-back-button">
-            <button>Back</button>
-        </a>
-        <h1>Employee Directory</h1>
-    </div>
-
-    <div id="mainArea">
-
-    </div>
-
+<div class='header'><h1>Home</h1></div>
+<div class='search-view'>
+<input class='search-key'/>
+<ul class='employee-list'></ul>
 </div>
 
-<script type="text/javascript" src="lib/cordova-1.7.0.js"></script>
-<script type="text/javascript" src="lib/jquery-1.7.2.min.js"></script>
-<script type="text/javascript" src="js/dao.js"></script>
-<script type="text/javascript" src="js/main.js"></script>
+<script src="lib/jquery-1.8.2.min.js"></script>
+<script src="js/storage/memory-store.js"></script>
+<script src="js/storage/websql-store.js"></script>
+<script src="js/main.js"></script>
 
 </body>
 </html>
