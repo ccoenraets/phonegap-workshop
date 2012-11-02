@@ -21,6 +21,8 @@ var MemoryStore = function(successCallback, errorCallback) {
         callLater(callback, employee);
     }
 
+    // Used to simulate async calls. This is done to provide a consistent interface with stores (like WebSqlStore)
+    // that use async data access APIs
     var callLater = function(callback, data) {
         if (callback) {
             setTimeout(function() {
