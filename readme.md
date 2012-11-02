@@ -16,29 +16,29 @@ To change the local storage option for the application:
 1. In index.html: remove the HTML markup inside the body tag.
 2. In main.js, add a showHomeView() function to the app object, and implement the function to programmatically add the markup to the body element.
 
-```javascript
-showHomeView: function() {
-    var html =
-            "<div class='header'><h1>Home</h1></div>" +
-            "<div class='search-view'>" +
-            "<input class='search-key'/>" +
-            "<ul class='employee-list'></ul>" +
-            "</div>"
-    $('body').html(html);
-    $('.search-key').on('keyup', $.proxy(this.findByName, this));
-}
-```
+    ```javascript
+    showHomeView: function() {
+        var html =
+                "<div class='header'><h1>Home</h1></div>" +
+                "<div class='search-view'>" +
+                "<input class='search-key'/>" +
+                "<ul class='employee-list'></ul>" +
+                "</div>"
+        $('body').html(html);
+        $('.search-key').on('keyup', $.proxy(this.findByName, this));
+    }
+    ```
 
 3. Pass an anonymous callback function as an argument to the initialize() function of the app object. The store will call this function after it has successfully initialized. In the anonymous function, call the showHomeView() function to display the Home View.
 
-```javascript
-initialize: function() {
-    var self = this;
-    this.store = new MemoryStore(function() {
-        self.showHomeView();
-    });
-}
-```
+    ```javascript
+    initialize: function() {
+        var self = this;
+        this.store = new MemoryStore(function() {
+            self.showHomeView();
+        });
+    }
+    ```
 
 ## Step 3: Using templates ##
 
