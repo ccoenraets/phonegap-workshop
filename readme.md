@@ -1,22 +1,50 @@
 # PhoneGap Workshop #
 
+## Step 1: Choosing a Local Storage Option ##
 
-## Step 1: Local storage options ##
+1. Examine the different persistence options in /work/js/storage.
+2. Test the application with the different stores.
 
-1. Examine the different persistence options in blank/js/storage.
-2. Modify the application in blank and experiment with the three different persistence options.
+To change the local storage option for the application:
 
-## Step 2: Single Page Application ##
+1. In work/index.html: add a script tag for the corresponding .js file: memory-store.js, ls-store.js, or websql-store.js.
+2. In work/main.js: Instantiate the specific store in the initialize() function: MemoryStore, LocalStorageStore, or WebSqlStore.
 
-1. Remove the HTML markup inside the body in index.html.
-2. Create a showHomeView() function that dynamically adds that markup to the document's body.
-3. Invoke showHomeView() in the initialize() function when the persistence store has been successfully initialized.
 
-## Step 3: Using templates: handlebar.js ##
+## Step 2: Setting Up a Single Page Application ##
 
-Create two templates in index.html:
+1. In index.html: remove the HTML markup inside the body tag.
+2. In main.js, add a showHomeView() function to the app object, and implement the function to programmatically add the markup to the body element.
 
-1. home-tpl:
+```javascript
+showHomeView: function() {
+    var html =
+            "<div class='header'><h1>Home</h1></div>" +
+            "<div class='search-view'>" +
+            "<input class='search-key'/>" +
+            "<ul class='employee-list'></ul>" +
+            "</div>"
+    $('body').html(html);
+    $('.search-key').on('keyup', $.proxy(this.findByName, this));
+}
+```
+
+3. Pass an anonymous callback function as an argument to the initialize() function of the app object. The store will call this function after it has successfully initialized. In the anonymous function, call the showHomeView() function to display the Home View.
+
+```javascript
+initialize: function() {
+    var self = this;
+    this.store = new MemoryStore(function() {
+        self.showHomeView();
+    });
+}
+```
+
+## Step 3: Using templates ##
+
+In index.html:
+
+1. Create an HTML template for the Search View:
 
 ```html
 <script id="home-tpl" type="text/x-handlebars-template">
@@ -28,13 +56,44 @@ Create two templates in index.html:
 </script>
 ```
 
-2. employee-li-tpl:
+2. Create an HTML template to render the employee list items:
 
-In the initialize() function, compile the two templates.
+```html
+<script id="employee-li-tpl" type="text/x-handlebars-template">
+    {{#.}}
+    <li><a href="#employees/{{this.id}}">{{this.firstName}} {{this.lastName}}</a></li>
+    {{/.}}
+</script>
+```
 
-Modify showHomeView() to use the homeTpl template
+In main.js:
 
-Modify findByName() to use the employeeLiTpl template
+1. In the app initialize() function, add the code to compile the two templates defined above:
+
+```javascript
+this.homeTpl = Handlebars.compile($("#home-tpl").html());
+this.employeeLiTpl = Handlebars.compile($("#employee-li-tpl").html());
+```
+
+2. Modify showHomeView() to use the homeTpl template:
+
+```javascript
+showHomeView: function() {
+    $('body').html(this.homeTpl());
+    $('.search-key').on('keyup', $.proxy(this.findByName, this));
+}
+```
+
+3. Modify findByName() to use the employeeLiTpl template
+
+```javascript
+findByName: function() {
+    var self = this;
+    this.store.findByName($('.search-key').val(), function(employees) {
+        $('.employee-list').html(self.employeeLiTpl(employees));
+    });
+}
+```
 
 ## Step 4: Creating a View Class ##
 
