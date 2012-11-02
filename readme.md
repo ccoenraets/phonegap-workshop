@@ -18,13 +18,15 @@ Create two templates in index.html:
 
 1. home-tpl:
 
-    <script id="home-tpl" type="text/x-handlebars-template">
-        <div class='header'><h1>Home</h1></div>
-        <div class='search-view'>
-            <input class='search-key'/>
-            <ul class='employee-list'></ul>
-        </div>
-    </script>
+```javascript
+<script id="home-tpl" type="text/x-handlebars-template">
+    <div class='header'><h1>Home</h1></div>
+    <div class='search-view'>
+        <input class='search-key'/>
+        <ul class='employee-list'></ul>
+    </div>
+</script>
+```
 
 2. employee-li-tpl:
 
