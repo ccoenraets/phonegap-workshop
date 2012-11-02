@@ -3,17 +3,36 @@
 
 ## Step 1: Local storage options ##
 
-## Step 2: Using templates: handlebar.js ##
+1. Examine the different persistence options in blank/js/storage.
+2. Modify the application in blank and experiment with the three different persistence options.
 
-## Step 3: Creating a View Class ##
+## Step 2: Single Page Application ##
 
-## Step 4: Scrolling ##
+1. Remove the HTML markup inside the body in index.html.
+2. Create a showHomeView() function that dynamically adds that markup to the document's body.
+3. Invoke showHomeView() in the initialize() function when the persistence store has been successfully initialized.
 
-## Step 5: Routing / Multiple Views ##
+## Step 3: Using templates: handlebar.js ##
 
-## Step 6: PhoneGap APIs: Location, Picture, Contacts ##
+Create two templates in index.html:
+1. home-tpl:
+2. employee-li-tpl:
 
-## Step 7: CSS Transitions ##
+In the initialize() function, compile the two templates.
+
+Modify showHomeView() to use the homeTpl template
+
+Modify findByName() to use the employeeLiTpl template
+
+## Step 4: Creating a View Class ##
+
+## Step 5: Scrolling ##
+
+## Step 6: Routing / Multiple Views ##
+
+## Step 7: PhoneGap APIs: Location, Picture, Contacts ##
+
+## Step 8: CSS Transitions ##
 
 
 More topics:
