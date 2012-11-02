@@ -46,54 +46,54 @@ In index.html:
 
 1. Create an HTML template for the Search View:
 
-```html
-<script id="home-tpl" type="text/x-handlebars-template">
-    <div class='header'><h1>Home</h1></div>
-    <div class='search-view'>
-        <input class='search-key'/>
-        <ul class='employee-list'></ul>
-    </div>
-</script>
-```
+    ```html
+    <script id="home-tpl" type="text/x-handlebars-template">
+        <div class='header'><h1>Home</h1></div>
+        <div class='search-view'>
+            <input class='search-key'/>
+            <ul class='employee-list'></ul>
+        </div>
+    </script>
+    ```
 
 2. Create an HTML template to render the employee list items:
 
-```html
-<script id="employee-li-tpl" type="text/x-handlebars-template">
-    {{#.}}
-    <li><a href="#employees/{{this.id}}">{{this.firstName}} {{this.lastName}}</a></li>
-    {{/.}}
-</script>
-```
+    ```html
+    <script id="employee-li-tpl" type="text/x-handlebars-template">
+        {{#.}}
+        <li><a href="#employees/{{this.id}}">{{this.firstName}} {{this.lastName}}</a></li>
+        {{/.}}
+    </script>
+    ```
 
 In main.js:
 
 1. In the app initialize() function, add the code to compile the two templates defined above:
 
-```javascript
-this.homeTpl = Handlebars.compile($("#home-tpl").html());
-this.employeeLiTpl = Handlebars.compile($("#employee-li-tpl").html());
-```
+    ```javascript
+    this.homeTpl = Handlebars.compile($("#home-tpl").html());
+    this.employeeLiTpl = Handlebars.compile($("#employee-li-tpl").html());
+    ```
 
 2. Modify showHomeView() to use the homeTpl template:
 
-```javascript
-showHomeView: function() {
-    $('body').html(this.homeTpl());
-    $('.search-key').on('keyup', $.proxy(this.findByName, this));
-}
-```
+    ```javascript
+    showHomeView: function() {
+        $('body').html(this.homeTpl());
+        $('.search-key').on('keyup', $.proxy(this.findByName, this));
+    }
+    ```
 
 3. Modify findByName() to use the employeeLiTpl template
 
-```javascript
-findByName: function() {
-    var self = this;
-    this.store.findByName($('.search-key').val(), function(employees) {
-        $('.employee-list').html(self.employeeLiTpl(employees));
-    });
-}
-```
+    ```javascript
+    findByName: function() {
+        var self = this;
+        this.store.findByName($('.search-key').val(), function(employees) {
+            $('.employee-list').html(self.employeeLiTpl(employees));
+        });
+    }
+    ```
 
 ## Step 4: Creating a View Class ##
 
