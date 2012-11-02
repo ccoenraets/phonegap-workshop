@@ -12,7 +12,7 @@ var app = {
     initialize: function() {
         var self = this;
         this.registerEvents();
-        this.store = new MemoryStore('../data.json', function() {
+        this.store = new MemoryStore(function() {
             $('body').html(new HomeView(self.store).render().el);
         });
     }
