@@ -18,7 +18,7 @@ Create two templates in index.html:
 
 1. home-tpl:
 
-```javascript
+```html
 <script id="home-tpl" type="text/x-handlebars-template">
     <div class='header'><h1>Home</h1></div>
     <div class='search-view'>
