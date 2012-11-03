@@ -3,18 +3,21 @@
 ## Step 1: Choosing a Local Storage Option ##
 
 1. Examine the different persistence options in /work/js/storage.
-2. Test the application with the different stores.
 
-To change the local storage option for the application:
+    - MemoryStore defined in memory-store.js
+    - LocalStorageStore defined in ls-store.js
+    - WebSqlStore defined in websql-store.js
 
-1. In work/index.html: add a script tag for the corresponding .js file: memory-store.js, ls-store.js, or websql-store.js.
-2. In work/main.js: Instantiate the specific store in the initialize() function: MemoryStore, LocalStorageStore, or WebSqlStore.
+2. Test the application with the different stores. To change the local mechanism option for the application:
+
+    - In work/index.html: add a script tag for the corresponding .js file: memory-store.js, ls-store.js, or websql-store.js.
+    - In work/main.js: Instantiate the specific store in the initialize() function of the app object: MemoryStore, LocalStorageStore, or WebSqlStore.
 
 
-## Step 2: Setting Up a Single Page Application ##
+## Step 2: Setting Up a "Single Page Application" ##
 
 1. In index.html: remove the HTML markup inside the body tag.
-2. In main.js, add a showHomeView() function to the app object, and implement the function to programmatically add the markup to the body element.
+2. In main.js, define a showHomeView() function inside the app object. Implement the function to programmatically add the Home View markup to the body element.
 
     ```javascript
     showHomeView: function() {
@@ -29,7 +32,7 @@ To change the local storage option for the application:
     }
     ```
 
-3. Pass an anonymous callback function as an argument to the initialize() function of the app object. The store will call this function after it has successfully initialized. In the anonymous function, call the showHomeView() function to display the Home View.
+3. In the app object's initialize() method, pass an anonymous callback function as an argument to the constructor of the persistence store. The store will call this function after it has successfully initialized. In the anonymous function, call the showHomeView() function to programmatically display the Home View.
 
     ```javascript
     initialize: function() {
@@ -40,9 +43,9 @@ To change the local storage option for the application:
     }
     ```
 
-## Step 3: Using templates ##
+## Step 3: Using Handlebar Templates ##
 
-In index.html:
+Modify index.html as follows:
 
 1. Create an HTML template for the Search View:
 
@@ -66,7 +69,7 @@ In index.html:
     </script>
     ```
 
-In main.js:
+Modify main.js as follows:
 
 1. In the app initialize() function, add the code to compile the two templates defined above:
 
@@ -75,7 +78,7 @@ In main.js:
     this.employeeLiTpl = Handlebars.compile($("#employee-li-tpl").html());
     ```
 
-2. Modify showHomeView() to use the homeTpl template:
+2. Modify showHomeView() to use the homeTpl template instead of the inlined HTML:
 
     ```javascript
     showHomeView: function() {
@@ -84,7 +87,7 @@ In main.js:
     }
     ```
 
-3. Modify findByName() to use the employeeLiTpl template
+3. Modify findByName() to use the employeeLiTpl template instead of the inlined HTML:
 
     ```javascript
     findByName: function() {
@@ -96,6 +99,46 @@ In main.js:
     ```
 
 ## Step 4: Creating a View Class ##
+
+1. Create a file called HomeView.js in work/js, and define a HomeView class implemented as follows:
+
+    ```javascript
+    var HomeView = function(store) {
+
+        this.render = function() {
+            this.el.html(HomeView.template());
+            return this;
+        };
+
+        this.findByName = function() {
+            store.findByName($('.search-key').val(), function(employees) {
+                $('.employee-list').html(HomeView.liTemplate(employees));
+            });
+        };
+
+        // Wrap view in a div used to attach events
+        this.el = $('<div/>');
+        this.el.on('keyup', '.search-key', this.findByName);
+    }
+
+    HomeView.template = Handlebars.compile($("#home-tpl").html());
+    HomeView.liTemplate = Handlebars.compile($("#employee-li-tpl").html());
+    ```
+
+2. Modify main.js as follows:
+
+    - Remove showHomeView()
+    - Remove findByName()
+    - Modify the initialize function() as follows:
+
+        ```javascript
+        initialize: function() {
+            var self = this;
+            this.store = new MemoryStore(function() {
+                $('body').html(new HomeView(self.store).render().el);
+            });
+        }
+        ```
 
 ## Step 5: Scrolling ##
 

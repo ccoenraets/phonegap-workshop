@@ -11,6 +11,7 @@ var HomeView = function(store) {
         });
     };
 
+    // Wrap view in a div used to attach events
     this.el = $('<div/>');
     this.el.on('keyup', '.search-key', this.findByName);
 }
