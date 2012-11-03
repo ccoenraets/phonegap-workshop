@@ -3,13 +3,11 @@
 ## Step 1: Choosing a Local Storage Option ##
 
 1. Examine the different persistence options in /work/js/storage.
-
     - MemoryStore defined in memory-store.js
     - LocalStorageStore defined in ls-store.js
     - WebSqlStore defined in websql-store.js
 
 2. Test the application with the different stores. To change the local mechanism option for the application:
-
     - In work/index.html: add a script tag for the corresponding .js file: memory-store.js, ls-store.js, or websql-store.js.
     - In work/main.js: Instantiate the specific store in the initialize() function of the app object: MemoryStore, LocalStorageStore, or WebSqlStore.
 
@@ -126,7 +124,6 @@ Modify main.js as follows:
     HomeView.liTemplate = Handlebars.compile($("#employee-li-tpl").html());
 
 2. Modify main.js as follows:
-
     - Remove showHomeView()
     - Remove findByName()
     - Modify the initialize function() as follows:
