@@ -120,10 +120,10 @@ Modify main.js as follows:
         this.el = $('<div/>');
         this.el.on('keyup', '.search-key', this.findByName);
     }
+    ```
 
     HomeView.template = Handlebars.compile($("#home-tpl").html());
     HomeView.liTemplate = Handlebars.compile($("#employee-li-tpl").html());
-    ```
 
 2. Modify main.js as follows:
 
