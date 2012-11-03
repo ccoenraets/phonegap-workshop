@@ -8,6 +8,7 @@
     - WebSqlStore defined in websql-store.js
 
 
+
 2. Test the application with the different stores. To change the local mechanism option for the application:
     - In work/index.html: add a script tag for the corresponding .js file: memory-store.js, ls-store.js, or websql-store.js.
     - In work/main.js: Instantiate the specific store in the initialize() function of the app object: MemoryStore, LocalStorageStore, or WebSqlStore.
@@ -265,6 +266,10 @@ Modify main.js as follows:
     this.addToContacts = function(event) {
         event.preventDefault();
         console.log('addToContacts');
+        if (!navigator.contacts) {
+            app.showAlert("Contacts API not supported", "Error");
+            return;
+        }
         var contact = navigator.contacts.create();
         contact.name = {givenName: app.currentEmployee.firstName, familyName:  app.currentEmployee.lastName};
         var phoneNumbers = [];
@@ -298,6 +303,10 @@ Modify main.js as follows:
     this.changePicture = function(event) {
         event.preventDefault();
         console.log('changePicture');
+        if (!navigator.camera) {
+            app.showAlert("Camera API not supported", "Error");
+            return;
+        }
         var options =   {   quality: 50,
                             destinationType: Camera.DestinationType.DATA_URL,
                             sourceType: 1,      // 0:Photo Library, 1=Camera, 2=Saved Photo Album
@@ -396,3 +405,5 @@ More topics:
 - Touch vs click
 - Viewport
 - Testing
+- External template loader
+- Plugins

@@ -10,6 +10,19 @@ var app = {
         });
     },
 
+    showAlert: function (message, title) {
+        if (navigator.notification) {
+            navigator.notification.alert(
+                message,
+                null, // callback
+                title,
+                'OK' // Button label
+            );
+        } else {
+            alert(title + ": " + message);
+        }
+    },
+
     route: function() {
         var hash = window.location.hash;
         if (!hash) {

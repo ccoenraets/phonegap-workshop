@@ -21,6 +21,10 @@ var EmployeeView = function(employee) {
     this.addToContacts = function(event) {
         event.preventDefault();
         console.log('addToContacts');
+        if (!navigator.contacts) {
+            app.showAlert("Contacts API not supported", "Error");
+            return;
+        }
         var contact = navigator.contacts.create();
         contact.name = {givenName: app.currentEmployee.firstName, familyName:  app.currentEmployee.lastName};
         var phoneNumbers = [];
