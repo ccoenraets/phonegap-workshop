@@ -12,7 +12,7 @@ var app = {
         });
     },
 
-    showHomeView: function() {
+    renderHomeView: function() {
         var html =
                 "<div class='header'><h1>Home</h1></div>" +
                 "<div class='search-view'>" +
@@ -26,7 +26,7 @@ var app = {
     initialize: function() {
         var self = this;
         this.store = new MemoryStore(function() {
-            self.showHomeView();
+            self.renderHomeView();
         });
     }
 

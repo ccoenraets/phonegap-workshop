@@ -1,26 +1,30 @@
-# PhoneGap Workshop #
+# PhoneGap Workshop#
 
-## Step 1: Choosing a Local Storage Option ##
+## Part 1: Choosing a Local Storage Option ##
 
-1. Examine the different persistence options in /work/js/storage.
-    - MemoryStore defined in memory-store.js
-    - LocalStorageStore defined in ls-store.js
-    - WebSqlStore defined in websql-store.js
+##### Step 1: Explore different persistence mechansisms #####
+
+Open the following files in **/work/js/storage**, and explore the different persistence stores they define:
+
+1. memory-store.js (MemoryStore)
+2. ls-store.js (LocalStorageStore)
+3. websql-store.js (WebSqlStore)
+
+##### Step 2: Test the application with different persistence mechanisms #####
+
+To change the local persistence mechanism for the application:
+
+1. In **work/index.html**: add a script tag for the corresponding .js file: **memory-store.js**, **ls-store.js**, or **websql-store.js**.
+2. In **work/main.js**: Instantiate the specific store in the initialize() function of the app object: **MemoryStore**, **LocalStorageStore**, or **WebSqlStore**.
 
 
-
-2. Test the application with the different stores. To change the local mechanism option for the application:
-    - In work/index.html: add a script tag for the corresponding .js file: memory-store.js, ls-store.js, or websql-store.js.
-    - In work/main.js: Instantiate the specific store in the initialize() function of the app object: MemoryStore, LocalStorageStore, or WebSqlStore.
-
-
-## Step 2: Setting Up a "Single Page Application" ##
+## Part 2: Setting Up a Single Page Application ##
 
 1. In index.html: remove the HTML markup inside the body tag.
-2. In main.js, define a showHomeView() function inside the app object. Implement the function to programmatically add the Home View markup to the body element.
+2. In main.js, define a function named renderHomeView() inside the app object. Implement the function to programmatically add the Home View markup to the body element.
 
     ```javascript
-    showHomeView: function() {
+    renderHomeView: function() {
         var html =
                 "<div class='header'><h1>Home</h1></div>" +
                 "<div class='search-view'>" +
@@ -32,30 +36,28 @@
     }
     ```
 
-3. In the app object's initialize() method, pass an anonymous callback function as an argument to the constructor of the persistence store. The store will call this function after it has successfully initialized. In the anonymous function, call the showHomeView() function to programmatically display the Home View.
+3. Modify the initialize() function of the app object. Pass an anonymous callback function as an argument to the constructor of the persistence store (the store will call this function after it has successfully initialized). In the anonymous function, call the renderHomeView() function to programmatically display the Home View.
 
     ```javascript
     initialize: function() {
         var self = this;
         this.store = new MemoryStore(function() {
-            self.showHomeView();
+            self.renderHomeView();
         });
     }
     ```
 
-## Step 3: Using Handlebar Templates ##
+## Part 3: Using Handlebar Templates ##
 
 Modify index.html as follows:
 
-1. Create an HTML template for the Search View:
+1. Create an HTML template to render the Home View:
 
     ```html
     <script id="home-tpl" type="text/x-handlebars-template">
-        <div class='header'><h1>Home</h1></div>
-        <div class='search-view'>
-            <input class='search-key'/>
-            <ul class='employee-list'></ul>
-        </div>
+    <div class='header'><h1>Home</h1></div>
+    <div class='search-bar'><input class='search-key' type="search"/></div>
+    <ul class='employee-list'></ul>
     </script>
     ```
 
@@ -71,23 +73,23 @@ Modify index.html as follows:
 
 Modify main.js as follows:
 
-1. In the app initialize() function, add the code to compile the two templates defined above:
+1. In the initialize() function of the app object, add the code to compile the two templates defined above:
 
     ```javascript
     this.homeTpl = Handlebars.compile($("#home-tpl").html());
     this.employeeLiTpl = Handlebars.compile($("#employee-li-tpl").html());
     ```
 
-2. Modify showHomeView() to use the homeTpl template instead of the inlined HTML:
+2. Modify renderHomeView() to use the homeTpl template instead of the inline HTML:
 
     ```javascript
-    showHomeView: function() {
+    renderHomeView: function() {
         $('body').html(this.homeTpl());
         $('.search-key').on('keyup', $.proxy(this.findByName, this));
     }
     ```
 
-3. Modify findByName() to use the employeeLiTpl template instead of the inlined HTML:
+3. Modify findByName() to use the employeeLiTpl template instead of the inline HTML:
 
     ```javascript
     findByName: function() {
@@ -98,50 +100,85 @@ Modify main.js as follows:
     }
     ```
 
-## Step 4: Creating a View Class ##
+## Part 4: Creating a View Class ##
+
+##### Step 1: Create the HomeView Class #####
 
 1. Create a file called HomeView.js in work/js, and define a HomeView class implemented as follows:
 
     ```javascript
     var HomeView = function(store) {
 
-        this.render = function() {
-            this.el.html(HomeView.template());
-            return this;
-        };
+    }
+    ```
 
-        this.findByName = function() {
-            store.findByName($('.search-key').val(), function(employees) {
-                $('.employee-list').html(HomeView.liTemplate(employees));
-            });
-        };
+2. Add the two templates as _static_ members of HomeView.
 
-        // Wrap view in a div used to attach events
-        this.el = $('<div/>');
-        this.el.on('keyup', '.search-key', this.findByName);
+    ```javascript
+    var HomeView = function(store) {
+
     }
 
     HomeView.template = Handlebars.compile($("#home-tpl").html());
     HomeView.liTemplate = Handlebars.compile($("#employee-li-tpl").html());
     ```
 
-2. Modify main.js as follows:
-    + Remove showHomeView()
-    + Remove findByName()
-    + Modify the initialize function() as follows:
+3. Define an initialize() function inside the HomeView class. Define a div wrapper for the view. The div wrapper is used to attach the view related events. Invoke the initialize() function inside the HomeView constructor function.
 
-        ```javascript
-        initialize: function() {
-            var self = this;
-            this.store = new MemoryStore(function() {
-                $('body').html(new HomeView(self.store).render().el);
-            });
-        }
-        ```
+    ```javascript
+    var HomeView = function(store) {
 
-## Step 5: Scrolling ##
+        this.initialize = function() {
+            // Define a div wrapper for the view. The div wrapper is used to attach events.
+            this.el = $('<div/>');
+            this.el.on('keyup', '.search-key', this.findByName);
+        };
 
-## Step 6: Routing / Multiple Views ##
+        this.initialize();
+
+    }
+
+    HomeView.template = Handlebars.compile($("#home-tpl").html());
+    HomeView.liTemplate = Handlebars.compile($("#employee-li-tpl").html());
+    ```
+
+4. Move the renderHomeView() function from the app object to the HomeView class. To keep the view reusable, attach the html to the div wrapper (this.el) instead of the document body. Because the function is now encapsulated in the HomeView class, you can also rename it from renderHomeView() to just render().
+
+    ```javascript
+    this.render = function() {
+        this.el.html(HomeView.template());
+        return this;
+    };
+    ```
+
+5. Move the findByName() function from the app object to the HomeView class.
+
+    ```javascript
+    this.findByName = function() {
+        store.findByName($('.search-key').val(), function(employees) {
+            $('.employee-list').html(HomeView.liTemplate(employees));
+        });
+    };
+    ```
+
+##### Step 2: Using the HomeView class #####
+
+1. Remove the renderHomeView() function from the app object.
+2. Remove the findByName() function from the app object.
+3. Modify the initialize function() to display the Home View using the HomeView class:
+
+    ```javascript
+    initialize: function() {
+        var self = this;
+        this.store = new MemoryStore(function() {
+            $('body').html(new HomeView(self.store).render().el);
+        });
+    }
+    ```
+
+## Part 5: Scrolling ##
+
+## Part 6: Routing / Multiple Views ##
 
 1. In index.html, define a template defined as follows:
 
@@ -212,7 +249,7 @@ Modify main.js as follows:
 6. Test the application.
 
 
-## Step 7: Using the Location API ##
+## Part 7: Using the Location API ##
 
 1. In index.html, add the following list items to the employee template:
 
@@ -246,7 +283,7 @@ Modify main.js as follows:
 4. Test the Application
 
 
-## Step 8: Using the Contacts API ##
+## Part 8: Using the Contacts API ##
 
 1. In index.html, add the following list items to the employee template:
 
@@ -283,7 +320,7 @@ Modify main.js as follows:
 
 4. Test the Application
 
-## Step 9: Using the Camera API ##
+## Part 9: Using the Camera API ##
 
 1. In index.html, add the following list items to the employee template:
 
@@ -329,7 +366,7 @@ Modify main.js as follows:
 4. Test the Application
 
 
-## Step 10: CSS Transitions ##
+## Part 10: CSS Transitions ##
 
 1. Inside the app object, define a slidePage() function implemented as follows:
 

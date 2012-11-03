@@ -7,7 +7,7 @@ var app = {
         });
     },
 
-    showHomeView: function() {
+    renderHomeView: function() {
         $('body').html(this.homeTpl());
         $('.search-key').on('keyup', $.proxy(this.findByName, this));
     },
@@ -17,7 +17,7 @@ var app = {
         this.homeTpl = Handlebars.compile($("#home-tpl").html());
         this.employeeLiTpl = Handlebars.compile($("#employee-li-tpl").html());
         this.store = new MemoryStore(function() {
-            self.showHomeView();
+            self.renderHomeView();
         });
     }
 
