@@ -247,3 +247,14 @@ h2 {
     left: 0px;
     right: 0px;
 }
+
+.wrapper {
+    position:absolute;
+    z-index:1;
+    top:84px;
+    bottom:0px;
+    left:0;
+    width:100%;
+    background:#aaa;
+    overflow:auto;
+}
