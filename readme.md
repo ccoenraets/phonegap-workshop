@@ -18,6 +18,7 @@ To change the local persistence mechanism for the application:
 2. In **js/main.js**: Instantiate the specific store in the initialize() function of the app object: **MemoryStore**, **LocalStorageStore**, or **WebSqlStore**.
 
 
+
 ## Part 2: Setting Up a Single Page Application ##
 
 1. In index.html: remove the HTML markup inside the body tag.
@@ -102,7 +103,7 @@ Modify main.js as follows:
 
 ## Part 4: Creating a View Class ##
 
-##### Step 1: Create the HomeView Class #####
+#### Step 1: Create the HomeView Class ####
 
 1. Create a file called HomeView.js in the js directory, and define a HomeView class implemented as follows:
 
@@ -161,7 +162,7 @@ Modify main.js as follows:
     };
     ```
 
-##### Step 2: Using the HomeView class #####
+#### Step 2: Using the HomeView class ####
 
 1. Remove the renderHomeView() function from the app object.
 2. Remove the findByName() function from the app object.
@@ -178,7 +179,7 @@ Modify main.js as follows:
 
 ## Part 5: Implementing Touch-Based Scrolling ##
 
-##### Step 1: Style the Application #####
+#### Step 1: Style the Application ####
 
 1. Add the Source Sans Pro font definition to the head of index.html
 
@@ -195,7 +196,7 @@ Modify main.js as follows:
 3. Test the application. Specifically, test the list behavior when the list is bigger than the browser window (or the screen)
 
 
-##### Step 2: Native Scrolling Approach #####
+#### Step 2: Native Scrolling Approach ####
 
 1. Modify the home-tpl template in index.html. Add a div wrapper with a _scroll_ class around the ul element with a scroll:
 
@@ -221,12 +222,12 @@ Modify main.js as follows:
     }
     ```
 
-##### Step 3: iScroll Approach #####
+#### Step 3: iScroll Approach ####
 
 
 ## Part 6: Routing to Multiple Views ##
 
-##### Step 1: Create the employee template #####
+#### Step 1: Create the employee template ####
 
 Open index.html and add a template to render a detailed employee view:
 
@@ -246,7 +247,7 @@ Open index.html and add a template to render a detailed employee view:
 </script>
 ```
 
-##### Step 2: Create the EmployeeView class #####
+#### Step 2: Create the EmployeeView class ####
 
 1. Create a file called EmployeeView.js in the js directory, and define an EmployeeView class implemented as follows:
 
@@ -292,7 +293,7 @@ Open index.html and add a template to render a detailed employee view:
     ```
 
 
-##### Step 3: Implement View Routing #####
+#### Step 3: Implement View Routing ####
 
 1. In the app's initialize() function, define a regular expression that matches employee details urls.
 
