@@ -17,8 +17,7 @@ To change the local persistence mechanism for the application:
 1. In **index.html**: add a script tag for the corresponding .js file: **memory-store.js**, **ls-store.js**, or **websql-store.js**.
 2. In **js/main.js**: Instantiate the specific store in the initialize() function of the app object: **MemoryStore**, **LocalStorageStore**, or **WebSqlStore**.
 
-
-
+  
 ## Part 2: Setting Up a Single Page Application ##
 
 1. In index.html: remove the HTML markup inside the body tag.
