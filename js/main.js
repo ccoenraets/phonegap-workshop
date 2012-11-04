@@ -1,5 +1,18 @@
 var app = {
 
+    showAlert: function (message, title) {
+        if (navigator.notification) {
+            navigator.notification.alert(
+                message,
+                null, // callback
+                title,
+                'OK' // Button label
+            );
+        } else {
+            alert(title ? (title + ": " + message) : message);
+        }
+    },
+
     findByName: function() {
         console.log('findByName');
         this.store.findByName($('.search-key').val(), function(employees) {
@@ -14,7 +27,7 @@ var app = {
     },
 
     initialize: function() {
-        this.store = new MemoryStore();
+        this.store = new WebSqlStore();
         $('.search-key').on('keyup', $.proxy(this.findByName, this));
     }
 

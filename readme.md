@@ -1,21 +1,21 @@
 # PhoneGap Workshop#
 
-## Part 1: Choosing a Local Storage Option ##
+## Part 1: Exploring the App and Choosing a Local Storage Option ##
 
-##### Step 1: Explore different persistence mechansisms #####
+#### Step 1: Explore different persistence mechansisms ####
 
-Open the following files in **/work/js/storage**, and explore the different persistence stores they define:
+Open the following files in **js/storage**, and explore the different persistence stores they define:
 
 1. memory-store.js (MemoryStore)
 2. ls-store.js (LocalStorageStore)
 3. websql-store.js (WebSqlStore)
 
-##### Step 2: Test the application with different persistence mechanisms #####
+#### Step 2: Test the application with different persistence mechanisms ####
 
 To change the local persistence mechanism for the application:
 
-1. In **work/index.html**: add a script tag for the corresponding .js file: **memory-store.js**, **ls-store.js**, or **websql-store.js**.
-2. In **work/main.js**: Instantiate the specific store in the initialize() function of the app object: **MemoryStore**, **LocalStorageStore**, or **WebSqlStore**.
+1. In **index.html**: add a script tag for the corresponding .js file: **memory-store.js**, **ls-store.js**, or **websql-store.js**.
+2. In **js/main.js**: Instantiate the specific store in the initialize() function of the app object: **MemoryStore**, **LocalStorageStore**, or **WebSqlStore**.
 
 
 ## Part 2: Setting Up a Single Page Application ##
@@ -104,7 +104,7 @@ Modify main.js as follows:
 
 ##### Step 1: Create the HomeView Class #####
 
-1. Create a file called HomeView.js in work/js, and define a HomeView class implemented as follows:
+1. Create a file called HomeView.js in the js directory, and define a HomeView class implemented as follows:
 
     ```javascript
     var HomeView = function(store) {
@@ -207,7 +207,7 @@ Modify main.js as follows:
     </script>
     ```
 
-2. Add the following class definition to work/css/styles.css:
+2. Add the following class definition to css/styles.css:
 
     ```css
     .scroll {
@@ -248,7 +248,7 @@ Open index.html and add a template to render a detailed employee view:
 
 ##### Step 2: Create the EmployeeView class #####
 
-1. Create a file called EmployeeView.js in work/js, and define an EmployeeView class implemented as follows:
+1. Create a file called EmployeeView.js in the js directory, and define an EmployeeView class implemented as follows:
 
     ```javascript
     var EmployeeView = function() {

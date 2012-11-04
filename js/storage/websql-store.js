@@ -35,8 +35,8 @@ var WebSqlStore = function(successCallback, errorCallback) {
                 function() {
                     console.log('Create table success');
                 },
-                function() {
-                    console.log('Create table error');
+                function(tx, error) {
+                    alert('Create table error: ' + error.message);
                 });
     }
 
@@ -70,7 +70,7 @@ var WebSqlStore = function(successCallback, errorCallback) {
                         console.log('INSERT success');
                     },
                     function(tx, error) {
-                        console.log('INSERT error: ' + error.message);
+                        alert('INSERT error: ' + error.message);
                     });
         }
     }
@@ -80,7 +80,7 @@ var WebSqlStore = function(successCallback, errorCallback) {
             function(tx) {
 
                 var sql = "SELECT e.id, e.firstName, e.lastName, e.title, count(r.id) reportCount " +
-                    "FROM employee e LEFT JOIN employee r ON r.managerId = e.id " +
+                    "FROM employee2 e LEFT JOIN employee r ON r.managerId = e.id " +
                     "WHERE e.firstName || ' ' || e.lastName LIKE ? " +
                     "GROUP BY e.id ORDER BY e.lastName, e.firstName";
 
@@ -94,8 +94,8 @@ var WebSqlStore = function(successCallback, errorCallback) {
                     callback(employees);
                 });
             },
-            function(tx, error) {
-                alert("Transaction Error: " + error);
+            function(error) {
+                app.showAlert(error.message, "Transaction Error");
             }
         );
     }
@@ -114,7 +114,7 @@ var WebSqlStore = function(successCallback, errorCallback) {
                     callback(results.rows.length === 1 ? results.rows.item(0) : null);
                 });
             },
-            function(tx, error) {
+            function(error) {
                 alert("Transaction Error: " + error.message);
             }
         );
