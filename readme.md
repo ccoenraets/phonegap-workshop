@@ -17,8 +17,74 @@ To change the local persistence mechanism for the application:
 1. In **index.html**: add a script tag for the corresponding .js file: **memory-store.js**, **ls-store.js**, or **websql-store.js**.
 2. In **js/main.js**: Instantiate the specific store in the initialize() function of the app object: **MemoryStore**, **LocalStorageStore**, or **WebSqlStore**.
 
-  
-## Part 2: Setting Up a Single Page Application ##
+## Part 2: Building with PhoneGap Build ##
+
+1. Create an account on http://build.phonegap.com if you don't already have one.
+2. Create a new application on PhoneGap Build. Either point to a GitHub repository, or zip up your phonegap-workshop directory and upload it to PhoneGap Build.
+3. Click the **Ready to build** button
+4. Using a QR Code reader application, install the App on your device.
+
+To configure build preferences:
+
+1. In the phonegap-workshop directory, add a config.xml file defined as follows (make the necessary adjustments: id, author, etc.):
+
+    ```xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <widget xmlns     = "http://www.w3.org/ns/widgets"
+            xmlns:gap = "http://phonegap.com/ns/1.0"
+            id        = "org.coenraets.employeedirectory"
+            versionCode="10"
+            version   = "1.1.0">
+
+        <name>Employee Directory</name>
+
+        <description>
+            A simple employee directory application
+        </description>
+
+        <author href="http://coenraets.org" email="ccoenraets@gmail.com">
+            Christophe Coenraets
+        </author>
+
+    </widget>
+    ```
+2. If you used the GitHub approach, sync with GitHub and click the **Update Code** button in PhoneGap Build.
+   If you sed the zip file approach, zip up zip up your phonegap-workshop directory and upload the new version to PhoneGap Build
+
+## Part 3: Using Native Notification ##
+
+1. In index.html, add the following script tag:
+
+    ```html
+    <script src="phonegap.js"></script>
+    ```
+
+2. In main.js, define a function named showAlert() inside the app object. If _navigator.notification_ is available, use its alert() function. Otherwise, use the default browser alert() function. 
+
+    ```javascript
+    showAlert: function (message, title) {
+        if (navigator.notification) {
+            navigator.notification.alert(message, null, title, 'OK');
+        } else {
+            alert(title ? (title + ": " + message) : message);
+        }
+    }
+    ```
+
+3. Test the notification logic by displaying a message when the application store has been initialized: Pass an anonymous callback function as an argument to the constructor of the persistence store (the store will call this function after it has successfully initialized). In the anonymous function, invoke the showAlert() function. When you run the application in the browser, you see a standard browser alert. When you run the application on your device, you see a native alert.
+
+    ```javascript
+    initialize: function() {
+        var self = this;
+        this.store = new MemoryStore(function() {
+            self.showAlert('Store Initialized', 'Info');
+        });
+        $('.search-key').on('keyup', $.proxy(this.findByName, this));
+    }
+    ```
+
+
+## Part 4: Setting Up a Single Page Application ##
 
 1. In index.html: remove the HTML markup inside the body tag.
 2. In main.js, define a function named renderHomeView() inside the app object. Implement the function to programmatically add the Home View markup to the body element.
@@ -36,7 +102,7 @@ To change the local persistence mechanism for the application:
     }
     ```
 
-3. Modify the initialize() function of the app object. Pass an anonymous callback function as an argument to the constructor of the persistence store (the store will call this function after it has successfully initialized). In the anonymous function, call the renderHomeView() function to programmatically display the Home View.
+3. Modify the initialize() function of the app object. In the anonymous callback function of the store constructor, call the renderHomeView() function to programmatically display the Home View.
 
     ```javascript
     initialize: function() {
@@ -47,7 +113,7 @@ To change the local persistence mechanism for the application:
     }
     ```
 
-## Part 3: Using Handlebar Templates ##
+## Part 5: Using Handlebar Templates ##
 
 Modify index.html as follows:
 
@@ -100,7 +166,7 @@ Modify main.js as follows:
     }
     ```
 
-## Part 4: Creating a View Class ##
+## Part 6: Creating a View Class ##
 
 #### Step 1: Create the HomeView Class ####
 
@@ -176,7 +242,7 @@ Modify main.js as follows:
     }
     ```
 
-## Part 5: Implementing Touch-Based Scrolling ##
+## Part 7: Implementing Touch-Based Scrolling ##
 
 #### Step 1: Style the Application ####
 
@@ -224,7 +290,7 @@ Modify main.js as follows:
 #### Step 3: iScroll Approach ####
 
 
-## Part 6: Routing to Multiple Views ##
+## Part 8: Routing to Multiple Views ##
 
 #### Step 1: Create the employee template ####
 
@@ -330,7 +396,7 @@ Open index.html and add a template to render a detailed employee view:
 6. Test the application.
 
 
-## Part 7: Using the Location API ##
+## Part 9: Using the Location API ##
 
 1. In index.html, add the following list item to the employee template:
 
@@ -364,7 +430,7 @@ Open index.html and add a template to render a detailed employee view:
 4. Test the Application
 
 
-## Part 8: Using the Contacts API ##
+## Part 10: Using the Contacts API ##
 
 1. In index.html, add the following list item to the employee template:
 
@@ -401,7 +467,7 @@ Open index.html and add a template to render a detailed employee view:
 
 4. Test the Application
 
-## Part 9: Using the Camera API ##
+## Part 11: Using the Camera API ##
 
 1. In index.html, add the following list item to the employee template:
 
@@ -447,7 +513,7 @@ Open index.html and add a template to render a detailed employee view:
 4. Test the Application
 
 
-## Part 10: CSS Transitions ##
+## Part 12: Sliding Pages with CSS Transitions ##
 
 1. Inside the app object, define a slidePage() function implemented as follows:
 
