@@ -176,59 +176,140 @@ Modify main.js as follows:
     }
     ```
 
-## Part 5: Scrolling ##
+## Part 5: Implementing Touch-Based Scrolling ##
 
-## Part 6: Routing / Multiple Views ##
+##### Step 1: Style the Application #####
 
-1. In index.html, define a template defined as follows:
+1. Add the Source Sans Pro font definition to the head of index.html
+
+    ```javascript
+    <script src="../css/source-sans-pro.js"></script>
+    ```
+
+2. Add styles.css to the head of index.html
+
+    ```javascript
+    <link href="../css/styles.css" rel="stylesheet">
+    ```
+
+3. Test the application. Specifically, test the list behavior when the list is bigger than the browser window (or the screen)
+
+
+##### Step 2: Native Scrolling Approach #####
+
+1. Modify the home-tpl template in index.html. Add a div wrapper with a _scroll_ class around the ul element with a scroll:
 
     ```html
-    <script id="employee-tpl" type="text/x-handlebars-template">
-        <div class='header'><a href='#' class="button header-button header-button-left">Back</a><h1>Details</h1></div>
-        <div class='details'>
-            <img id='image' src='../img/{{firstName}}_{{lastName}}.jpg' style="float:left;margin:10px;"/>
-            <h1>{{firstName}} {{lastName}}</h1>
-            <h2>{{title}}</h2>
-            <ul>
-                <li><a href="tel:{{officePhone}}">Call Office<br/>{{officePhone}}</a></li>
-                <li><a href="tel:{{cellPhone}}">Call Cell<br/>{{cellPhone}}</a></li>
-                <li><a href="sms:{{cellPhone}}">SMS<br/>{{cellPhone}}</a></li>
-            </ul>
-        </div>
+    <script id="home-tpl" type="text/x-handlebars-template">
+        <div class='header'><h1>Home</h1></div>
+        <div class='search-bar'><input class='search-key' type="search"/></div>
+        <div class="scroll"><ul class='employee-list'></ul></div>
     </script>
     ```
 
-2. Create a file called EmployeeView.js in work/js, and define an EmployeeView class implemented as follows:
+2. Add the following class definition to work/css/styles.css:
+
+    ```css
+    .scroll {
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        position: absolute;
+        top: 84px;
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+    }
+    ```
+
+##### Step 3: iScroll Approach #####
+
+
+## Part 6: Routing to Multiple Views ##
+
+##### Step 1: Create the employee template #####
+
+Open index.html and add a template to render a detailed employee view:
+
+```html
+<script id="employee-tpl" type="text/x-handlebars-template">
+    <div class='header'><a href='#' class="button header-button header-button-left">Back</a><h1>Details</h1></div>
+    <div class='details'>
+        <img id='image' src='../img/{{firstName}}_{{lastName}}.jpg' style="float:left;margin:10px;"/>
+        <h1>{{firstName}} {{lastName}}</h1>
+        <h2>{{title}}</h2>
+        <ul>
+            <li><a href="tel:{{officePhone}}">Call Office<br/>{{officePhone}}</a></li>
+            <li><a href="tel:{{cellPhone}}">Call Cell<br/>{{cellPhone}}</a></li>
+            <li><a href="sms:{{cellPhone}}">SMS<br/>{{cellPhone}}</a></li>
+        </ul>
+    </div>
+</script>
+```
+
+##### Step 2: Create the EmployeeView class #####
+
+1. Create a file called EmployeeView.js in work/js, and define an EmployeeView class implemented as follows:
+
+    ```javascript
+    var EmployeeView = function() {
+
+    }
+    ```
+
+2. Add the template as a _static_ member of EmployeeView.
+
+    ```javascript
+    var EmployeeView = function() {
+
+    }
+
+    EmployeeView.template = Handlebars.compile($("#employee-tpl").html());
+    ```
+
+3. Define an initialize() function inside the HomeView class. Define a div wrapper for the view. The div wrapper is used to attach the view related events. Invoke the initialize() function inside the HomeView constructor function.
 
     ```javascript
     var EmployeeView = function(employee) {
 
-        this.render = function() {
-            this.el.html(EmployeeView.template(this.employee));
-            return this;
+        this.initialize = function() {
+            this.el = $('<div/>')
         };
 
-        this.employee = employee;
-
-        this.el = $('<div/>')
+        this.initialize();
 
      }
+
     EmployeeView.template = Handlebars.compile($("#employee-tpl").html());
     ```
 
-3. In the app's initialize(), define a regular expression that matches employee details urls.
+4. Define a render() function implemented as follows:
+
+    ```javascript
+    this.render = function() {
+        this.el.html(EmployeeView.template(employee));
+        return this;
+    };
+    ```
+
+
+##### Step 3: Implement View Routing #####
+
+1. In the app's initialize() function, define a regular expression that matches employee details urls.
 
     ```javascript
     this.detailsURL = /^#employees\/(\d{1,})/;
     ```
 
-4. In the app's registerEvents() function, add an event listener to listen to URL hash map changes:
+4. In the app's registerEvents() function, add an event listener to listen to URL hash tag changes:
 
     ```javascript
     $(window).on('hashchange', $.proxy(this.route, this));
     ```
 
-5. In the app object, define a route() function implemented as follows:
+5. In the app object, define a route() function to route the app to the appropriate view:
+    - If there is no hash tag in the URL: display the HomeView
+    - If there is a has tag matching the pattern for an employee details URL: display an EmployeeView for the specified employee.
+
 
     ```javascript
     route: function() {
@@ -251,19 +332,19 @@ Modify main.js as follows:
 
 ## Part 7: Using the Location API ##
 
-1. In index.html, add the following list items to the employee template:
+1. In index.html, add the following list item to the employee template:
 
     ```html
     <li><a href="#" class="add-location-btn">Add Location</a></li>
     ```
 
-2. In EmployeeView, register an event listener for the click event of the Add Location list item:
+2. In the initialize() function of EmployeeView, register an event listener for the click event of the _Add Location_ list item:
 
     ```javascript
     this.el.on('click', '.add-location-btn', this.addLocation);
     ```
 
-3. In EmployeeView, define the addLocation event handler as follows:
+3. In EmployeeView, define the _addLocation_ event handler as follows:
 
     ```javascript
     this.addLocation = function(event) {
@@ -285,19 +366,19 @@ Modify main.js as follows:
 
 ## Part 8: Using the Contacts API ##
 
-1. In index.html, add the following list items to the employee template:
+1. In index.html, add the following list item to the employee template:
 
     ```html
     <li><a href="#" class="add-contact-btn">Add to Contacts</a></li>
     ```
 
-2. In EmployeeView, register an event listener for the click event of the Add to Contacts list item:
+2. In the initialize() function of EmployeeView, register an event listener for the click event of the _Add to Contacts_ list item:
 
     ```javascript
     this.el.on('click', '.add-contact-btn', this.addToContacts);
     ```
 
-3. In EmployeeView, define the addToContacts event handler as follows:
+3. In EmployeeView, define the _addToContacts_ event handler as follows:
 
     ```javascript
     this.addToContacts = function(event) {
@@ -322,13 +403,13 @@ Modify main.js as follows:
 
 ## Part 9: Using the Camera API ##
 
-1. In index.html, add the following list items to the employee template:
+1. In index.html, add the following list item to the employee template:
 
     ```html
     <li><a href="#" class="change-pic-btn">Change Picture</a></li>
     ```
 
-2. In EmployeeView, register an event listener for the click event of the Change Picture list item:
+2. In the initialize() function of EmployeeView, register an event listener for the click event of the Change Picture list item:
 
     ```javascript
     this.el.on('click', '.change-pic-btn', this.changePicture);

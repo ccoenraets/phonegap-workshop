@@ -96,25 +96,6 @@ li {
     padding: 10px;
 }
 
-.scroll {
-    -webkit-box-flex: 1;
-    -moz-box-flex: 1;
-    box-flex: 1;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-    display: -webkit-box;
-    display: -moz-box;
-    display: box;
-    -webkit-box-orient: vertical;
-    -moz-box-orient: vertical;
-    box-orient: vertical;
-    position: absolute;
-    top: 84px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-}
-
 ul {
     margin: 0;
     padding: 0;
@@ -255,4 +236,14 @@ h2 {
     font-weight: normal;
     padding: 0px;
     margin: 0px;
+}
+
+.scroll {
+     overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    position: absolute;
+    top: 84px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
 }
