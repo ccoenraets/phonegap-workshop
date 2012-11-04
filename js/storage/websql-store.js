@@ -95,7 +95,7 @@ var WebSqlStore = function(successCallback, errorCallback) {
                 });
             },
             function(error) {
-                app.showAlert(error.message, "Transaction Error");
+                app.showAlert(error.message, "Transaction Error!");
             }
         );
     }
