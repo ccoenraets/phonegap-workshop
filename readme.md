@@ -19,14 +19,14 @@ To change the local persistence mechanism for the application:
 
 ## Part 2: Building with PhoneGap Build ##
 
-1. Create an account on http://build.phonegap.com if you don't already have one.
+1. If you don't already have one, create an account on http://build.phonegap.com.
 2. Create a new application on PhoneGap Build. Either point to a GitHub repository, or zip up your phonegap-workshop directory and upload it to PhoneGap Build.
 3. Click the **Ready to build** button
-4. Using a QR Code reader application, install the App on your device.
+4. When the build process completes, use a QR Code reader app to install the Employee Directory application on your device.
 
-To configure build preferences:
+To fine tune your build preferences:
 
-1. In the phonegap-workshop directory, add a config.xml file defined as follows (make the necessary adjustments: id, author, etc.):
+1. In the phonegap-workshop directory, add a config.xml file defined as follows (make the necessary adjustments for id, author, etc.):
 
     ```xml
     <?xml version="1.0" encoding="UTF-8"?>
@@ -49,7 +49,7 @@ To configure build preferences:
     </widget>
     ```
 2. If you used the GitHub approach, sync with GitHub and click the **Update Code** button in PhoneGap Build.
-   If you sed the zip file approach, zip up zip up your phonegap-workshop directory and upload the new version to PhoneGap Build
+   If you used the zip file approach, zip up your phonegap-workshop directory and upload the new version to PhoneGap Build
 
 ## Part 3: Using Native Notification ##
 
@@ -58,6 +58,8 @@ To configure build preferences:
     ```html
     <script src="phonegap.js"></script>
     ```
+
+    NOTE: A platform specific phonegap.js is injected by PhoneGap Build at build time. In other words, phonegaps.js doesn't need to be (and shouldn't be) present in your project folder.
 
 2. In main.js, define a function named showAlert() inside the app object. If _navigator.notification_ is available, use its alert() function. Otherwise, use the default browser alert() function. 
 
@@ -117,13 +119,19 @@ To configure build preferences:
 
 Modify index.html as follows:
 
-1. Create an HTML template to render the Home View:
+1. Add a script tag to include the handlebar.js library:
+
+    ```html
+    <script src="lib/handlebars.js"></script>
+    ````
+
+2. Create an HTML template to render the Home View:
 
     ```html
     <script id="home-tpl" type="text/x-handlebars-template">
-    <div class='header'><h1>Home</h1></div>
-    <div class='search-bar'><input class='search-key' type="search"/></div>
-    <ul class='employee-list'></ul>
+        <div class='header'><h1>Home</h1></div>
+        <div class='search-bar'><input class='search-key' type="search"/></div>
+        <ul class='employee-list'></ul>
     </script>
     ```
 
@@ -132,7 +140,7 @@ Modify index.html as follows:
     ```html
     <script id="employee-li-tpl" type="text/x-handlebars-template">
         {{#.}}
-        <li><a href="#employees/{{this.id}}">{{this.firstName}} {{this.lastName}}</a></li>
+        <li><a href="#employees/{{this.id}}">{{this.firstName}} {{this.lastName}}<br/>{{this.title}}</a></li>
         {{/.}}
     </script>
     ```
@@ -166,6 +174,8 @@ Modify main.js as follows:
     }
     ```
 
+4. Test the application.
+
 ## Part 6: Creating a View Class ##
 
 #### Step 1: Create the HomeView Class ####
@@ -189,7 +199,7 @@ Modify main.js as follows:
     HomeView.liTemplate = Handlebars.compile($("#employee-li-tpl").html());
     ```
 
-3. Define an initialize() function inside the HomeView class. Define a div wrapper for the view. The div wrapper is used to attach the view related events. Invoke the initialize() function inside the HomeView constructor function.
+3. Define an initialize() function inside the HomeView class. Define a div wrapper for the view. The div wrapper is used to attach the view-related events. Invoke the initialize() function inside the HomeView constructor function.
 
     ```javascript
     var HomeView = function(store) {
@@ -229,9 +239,15 @@ Modify main.js as follows:
 
 #### Step 2: Using the HomeView class ####
 
-1. Remove the renderHomeView() function from the app object.
-2. Remove the findByName() function from the app object.
-3. Modify the initialize function() to display the Home View using the HomeView class:
+1. In index.html, add a script tag to include HomeView.js:
+
+    ```html
+    <script src="js/HomeView.js"></script>
+    ```
+
+2. Remove the renderHomeView() function from the app object.
+3. Remove the findByName() function from the app object.
+4. Modify the initialize function() to display the Home View using the HomeView class:
 
     ```javascript
     initialize: function() {
@@ -242,23 +258,25 @@ Modify main.js as follows:
     }
     ```
 
-## Part 7: Implementing Touch-Based Scrolling ##
+## Part 7: Adding Styles and Touch-Based Scrolling ##
 
 #### Step 1: Style the Application ####
 
 1. Add the Source Sans Pro font definition to the head of index.html
 
     ```javascript
-    <script src="../css/source-sans-pro.js"></script>
+    <script src="css/source-sans-pro.js"></script>
     ```
 
 2. Add styles.css to the head of index.html
 
     ```javascript
-    <link href="../css/styles.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
     ```
 
-3. Test the application. Specifically, test the list behavior when the list is bigger than the browser window (or the screen)
+3. I index.html, modify the home-tpl template: change the search-key input type from _text_ to _search_.
+
+4. Test the application. Specifically, test the list behavior when the list is bigger than the browser window (or the screen)
 
 
 #### Step 2: Native Scrolling Approach ####
@@ -289,8 +307,74 @@ Modify main.js as follows:
 
 #### Step 3: iScroll Approach ####
 
+1. Add a script tag to include the iscroll.js library:
 
-## Part 8: Routing to Multiple Views ##
+    ```html
+    <script src="lib/iscroll.js"></script>
+    ```
+
+2. In HomeView.js, modify the findByName() function: Instantiate an iScroll object to scroll the list of employees returned. If the iScroll object already exists (), simply refresh it to adapt it to the new size of the list.
+
+    ```javascript
+    this.findByName = function() {
+        store.findByName($('.search-key').val(), function(employees) {
+            $('.employee-list').html(HomeView.liTemplate(employees));
+            if (self.iscroll) {
+                console.log('Refresh iScroll');
+                self.iscroll.refresh();
+            } else {
+                console.log('New iScroll');
+                self.iscroll = new iScroll($('.scroll', self.el)[0], {hScrollbar: false, vScrollbar: false });
+            }
+        });
+    };
+
+    ``` 
+
+
+## Part 8: Highlighting Tapped or Clicked UI Elements ##
+
+1. In styles.css, add a _tappable-active_ class definition for _tapped_ or _clicked_ list item links. The class simply highlights the item with a blue background:
+
+    ```css
+    li>a.tappable-active {
+        color: #fff;
+        background-color: #4286f5;
+    }
+    ```
+
+2. In main.js, define a registerEvents() function inside the app object. Add a the _tappable_active_ class to the selected (_tapped_ or _clicked_) list item:
+
+    ```javascript
+        registerEvents: function() {
+        var self = this;
+        // Check of browser supports touch events...
+        if (document.documentElement.hasOwnProperty('ontouchstart')) {
+            // ... if yes: register touch event listener to change the "selected" state of the item
+            $('body').on('touchstart', 'a', function(event) {
+                $(event.target).addClass('tappable-active');
+            });
+            $('body').on('touchend', 'a', function(event) {
+                $(event.target).removeClass('tappable-active');
+            });
+        } else {
+            // ... if not: register mouse events instead
+            $('body').on('mousedown', 'a', function(event) {
+                $(event.target).addClass('tappable-active');
+            });
+            $('body').on('mouseup', 'a', function(event) {
+                $(event.target).removeClass('tappable-active');
+            });
+        }
+    }
+    ```
+
+3. Invoke the registerEvents() function from within the app object's initialize() function.
+
+4. Test the application.
+
+
+## Part 9: Routing to Multiple Views ##
 
 #### Step 1: Create the employee template ####
 
@@ -300,7 +384,7 @@ Open index.html and add a template to render a detailed employee view:
 <script id="employee-tpl" type="text/x-handlebars-template">
     <div class='header'><a href='#' class="button header-button header-button-left">Back</a><h1>Details</h1></div>
     <div class='details'>
-        <img id='image' src='../img/{{firstName}}_{{lastName}}.jpg' style="float:left;margin:10px;"/>
+        <img id='image' src='img/{{firstName}}_{{lastName}}.jpg' style="float:left;margin:10px;"/>
         <h1>{{firstName}} {{lastName}}</h1>
         <h2>{{title}}</h2>
         <ul>
@@ -366,13 +450,13 @@ Open index.html and add a template to render a detailed employee view:
     this.detailsURL = /^#employees\/(\d{1,})/;
     ```
 
-4. In the app's registerEvents() function, add an event listener to listen to URL hash tag changes:
+2. In the app's registerEvents() function, add an event listener to listen to URL hash tag changes:
 
     ```javascript
     $(window).on('hashchange', $.proxy(this.route, this));
     ```
 
-5. In the app object, define a route() function to route the app to the appropriate view:
+3. In the app object, define a route() function to route requests to the appropriate view:
     - If there is no hash tag in the URL: display the HomeView
     - If there is a has tag matching the pattern for an employee details URL: display an EmployeeView for the specified employee.
 
@@ -393,12 +477,26 @@ Open index.html and add a template to render a detailed employee view:
     }
     ```
 
-6. Test the application.
+4. Modify the initialize() function to call the route() function:
 
 
-## Part 9: Using the Location API ##
+    ```javascript
+    initialize: function() {
+        var self = this;
+        this.detailsURL = /^#employees\/(\d{1,})/;
+        this.registerEvents();
+        this.store = new MemoryStore(function() {
+            self.route();
+        });
+    }
+    ```
 
-1. In index.html, add the following list item to the employee template:
+5. Test the application.
+
+
+## Part 10: Using the Location API ##
+
+1. In index.html, add the following list item to the employee-tpl template:
 
     ```html
     <li><a href="#" class="add-location-btn">Add Location</a></li>
@@ -424,13 +522,13 @@ Open index.html and add a template to render a detailed employee view:
                 alert('Error getting location');
             });
         return false;
-    }
+    };
     ```
 
 4. Test the Application
 
 
-## Part 10: Using the Contacts API ##
+## Part 11: Using the Contacts API ##
 
 1. In index.html, add the following list item to the employee template:
 
@@ -462,12 +560,12 @@ Open index.html and add a template to render a detailed employee view:
         contact.phoneNumbers = phoneNumbers;
         contact.save();
         return false;
-    }
+    };
     ```
 
 4. Test the Application
 
-## Part 11: Using the Camera API ##
+## Part 12: Using the Camera API ##
 
 1. In index.html, add the following list item to the employee template:
 
@@ -513,9 +611,40 @@ Open index.html and add a template to render a detailed employee view:
 4. Test the Application
 
 
-## Part 12: Sliding Pages with CSS Transitions ##
+## Part 13: Sliding Pages with CSS Transitions ##
 
-1. Inside the app object, define a slidePage() function implemented as follows:
+1. Add the following classes to styles.css:
+
+    ```css
+    .page {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-transform:translate3d(0,0,0);
+    }
+
+    .stage-center {
+        top: 0;
+        left: 0;
+    }
+
+    .stage-left {
+        left: -100%;
+    }
+
+    .stage-right {
+        left: 100%;
+    }
+
+    .transition {
+        -moz-transition-duration: .375s;
+        -webkit-transition-duration: .375s;
+        -o-transition-duration: .375s;
+    }
+    ```
+
+
+2. Inside the app object, define a slidePage() function implemented as follows:
 
     ```javascript
     slidePage: function(page) {
@@ -558,7 +687,7 @@ Open index.html and add a template to render a detailed employee view:
     }
     ```
 
-2. Modify the route() function as follows:
+3. Modify the route() function as follows:
 
     ```javascript
     route: function() {
@@ -583,7 +712,7 @@ Open index.html and add a template to render a detailed employee view:
     ```
 
 
-More topics:
+## More topics ##
 
 - Conditional css
 - Touch vs click
