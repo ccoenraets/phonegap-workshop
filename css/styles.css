@@ -181,3 +181,13 @@ h2 {
     padding: 0px;
     margin: 0px;
 }
+
+.scroll {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    position: absolute;
+    top: 84px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+}
