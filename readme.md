@@ -387,6 +387,7 @@ Open index.html and add a template to render a detailed employee view:
         <img id='image' src='img/{{firstName}}_{{lastName}}.jpg' style="float:left;margin:10px;"/>
         <h1>{{firstName}} {{lastName}}</h1>
         <h2>{{title}}</h2>
+        <span class='location'></span>
         <ul>
             <li><a href="tel:{{officePhone}}">Call Office<br/>{{officePhone}}</a></li>
             <li><a href="tel:{{cellPhone}}">Call Cell<br/>{{cellPhone}}</a></li>
