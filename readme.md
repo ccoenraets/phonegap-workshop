@@ -4,29 +4,29 @@
 
 #### Step 1: Explore different persistence mechansisms ####
 
-Open the following files in **js/storage**, and explore the different persistence stores:
+Open the following files in **js/storage**, and explore the different persistence stores they define:
 
 1. memory-store.js (MemoryStore)
 2. ls-store.js (LocalStorageStore)
 3. websql-store.js (WebSqlStore)
 
-#### Step 2: Test the application with different persistence stores ####
+#### Step 2: Test the application with different persistence mechanisms ####
 
-To change the local persistence store for the application:
+To change the local persistence mechanism for the application:
 
-1. In **js/main.js**: Instantiate the specific store in the initialize() function of the app object: **MemoryStore**, **LocalStorageStore**, or **WebSqlStore**.
-2. In **index.html**: add a script tag for the corresponding .js file: **memory-store.js**, **ls-store.js**, or **websql-store.js**.
+1. In **index.html**: add a script tag for the corresponding .js file: **memory-store.js**, **ls-store.js**, or **websql-store.js**.
+2. In **js/main.js**: Instantiate the specific store in the initialize() function of the app object: **MemoryStore**, **LocalStorageStore**, or **WebSqlStore**.
 
 ## Part 2: Building with PhoneGap Build ##
 
 1. If you don't already have one, create an account on http://build.phonegap.com.
-2. Create a new application in PhoneGap Build. Either point to a GitHub repository, or zip up your phonegap-workshop directory and upload it to PhoneGap Build.
+2. Create a new application on PhoneGap Build. Either point to a GitHub repository, or zip up your phonegap-workshop directory and upload it to PhoneGap Build.
 3. Click the **Ready to build** button
 4. When the build process completes, use a QR Code reader app to install the Employee Directory application on your device.
 
 To fine tune your build preferences:
 
-1. In the phonegap-workshop directory, add a **config.xml** file defined as follows (make the necessary adjustments for id, author, etc.):
+1. In the phonegap-workshop directory, add a config.xml file defined as follows (make the necessary adjustments for id, author, etc.):
 
     ```xml
     <?xml version="1.0" encoding="UTF-8"?>
@@ -48,8 +48,8 @@ To fine tune your build preferences:
 
     </widget>
     ```
-2. If you used the GitHub approach, push your changes to your repository and click the **Update Code** button in PhoneGap Build.
-   If you used the zip file approach, zip up your phonegap-workshop directory again and upload the new version to PhoneGap Build
+2. If you used the GitHub approach, sync with GitHub and click the **Update Code** button in PhoneGap Build.
+   If you used the zip file approach, zip up your phonegap-workshop directory and upload the new version to PhoneGap Build
 
 ## Part 3: Using Native Notification ##
 
@@ -59,7 +59,7 @@ To fine tune your build preferences:
     <script src="phonegap.js"></script>
     ```
 
-    NOTE: This tells PhoneGap Build to inject a platform specific phonegap.js at build time. In other words, phonegap.js doesn't need to be (and shouldn't be) present in your project folder.
+    NOTE: A platform specific phonegap.js is injected by PhoneGap Build at build time. In other words, phonegaps.js doesn't need to be (and shouldn't be) present in your project folder.
 
 2. In main.js, define a function named showAlert() inside the app object. If _navigator.notification_ is available, use its alert() function. Otherwise, use the default browser alert() function. 
 
@@ -180,7 +180,7 @@ Modify main.js as follows:
 
 #### Step 1: Create the HomeView Class ####
 
-1. Create a file called HomeView.js in the js directory, and define a HomeView class as follows:
+1. Create a file called HomeView.js in the js directory, and define a HomeView class implemented as follows:
 
     ```javascript
     var HomeView = function(store) {
@@ -218,7 +218,7 @@ Modify main.js as follows:
     HomeView.liTemplate = Handlebars.compile($("#employee-li-tpl").html());
     ```
 
-4. Move the renderHomeView() function from the app object to the HomeView class. To keep the view reusable, attach the html to the div wrapper (this.el) instead of the document body. Because the function is now encapsulated in the HomeView class, you can also rename it render(), instead of renderHomeView().
+4. Move the renderHomeView() function from the app object to the HomeView class. To keep the view reusable, attach the html to the div wrapper (this.el) instead of the document body. Because the function is now encapsulated in the HomeView class, you can also rename it from renderHomeView() to just render().
 
     ```javascript
     this.render = function() {
@@ -274,14 +274,14 @@ Modify main.js as follows:
     <link href="css/styles.css" rel="stylesheet">
     ```
 
-3. In index.html, modify the home-tpl template: change the search-key input type from text to **search**.
+3. I index.html, modify the home-tpl template: change the search-key input type from _text_ to _search_.
 
-4. Test the application. Specifically, test the list behavior when the list is bigger than the browser window.
+4. Test the application. Specifically, test the list behavior when the list is bigger than the browser window (or the screen)
 
 
 #### Step 2: Native Scrolling Approach ####
 
-1. Modify the home-tpl template in index.html. Add a div wrapper with a _scroll_ class around the ul element:
+1. Modify the home-tpl template in index.html. Add a div wrapper with a _scroll_ class around the ul element with a scroll:
 
     ```html
     <script id="home-tpl" type="text/x-handlebars-template">
@@ -307,13 +307,13 @@ Modify main.js as follows:
 
 #### Step 3: iScroll Approach ####
 
-1. In index.html, add a script tag to include the iscroll.js library:
+1. Add a script tag to include the iscroll.js library:
 
     ```html
     <script src="lib/iscroll.js"></script>
     ```
 
-2. In HomeView.js, modify the findByName() function: Instantiate an iScroll object to scroll the list of employees. If the iScroll object already exists (), simply refresh it to adapt it to the size of the new list.
+2. In HomeView.js, modify the findByName() function: Instantiate an iScroll object to scroll the list of employees returned. If the iScroll object already exists (), simply refresh it to adapt it to the new size of the list.
 
     ```javascript
     this.findByName = function() {
@@ -334,7 +334,7 @@ Modify main.js as follows:
 
 ## Part 8: Highlighting Tapped or Clicked UI Elements ##
 
-1. In styles.css, add a _tappable-active_ class definition for _tapped_ or _clicked_ list items. The class simply highlights the item with a blue background:
+1. In styles.css, add a _tappable-active_ class definition for _tapped_ or _clicked_ list item links. The class simply highlights the item with a blue background:
 
     ```css
     li>a.tappable-active {
@@ -398,7 +398,7 @@ Open index.html and add a template to render a detailed employee view:
 
 #### Step 2: Create the EmployeeView class ####
 
-1. Create a file called EmployeeView.js in the js directory, and define an EmployeeView class as follows:
+1. Create a file called EmployeeView.js in the js directory, and define an EmployeeView class implemented as follows:
 
     ```javascript
     var EmployeeView = function() {
@@ -416,7 +416,7 @@ Open index.html and add a template to render a detailed employee view:
     EmployeeView.template = Handlebars.compile($("#employee-tpl").html());
     ```
 
-3. Define an initialize() function inside the HomeView class. Define a div wrapper for the view. The div wrapper is used to attach the view-related events. Invoke the initialize() function inside the HomeView constructor function.
+3. Define an initialize() function inside the HomeView class. Define a div wrapper for the view. The div wrapper is used to attach the view related events. Invoke the initialize() function inside the HomeView constructor function.
 
     ```javascript
     var EmployeeView = function(employee) {
