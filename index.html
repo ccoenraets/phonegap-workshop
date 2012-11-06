@@ -17,11 +17,28 @@
     {{/.}}
 </script>
 
+<script id="employee-tpl" type="text/x-handlebars-template">
+    <div class='header'><a href='#' class="button header-button header-button-left">Back</a><h1>Details</h1></div>
+    <div class='details'>
+        <img id='image' src='img/{{firstName}}_{{lastName}}.jpg' style="float:left;margin:10px;"/>
+        <h1>{{firstName}} {{lastName}}</h1>
+        <h2>{{title}}</h2>
+        <span class="location"></span>
+        <ul>
+            <li><a href="tel:{{officePhone}}">Call Office<br/>{{officePhone}}</a></li>
+            <li><a href="tel:{{cellPhone}}">Call Cell<br/>{{cellPhone}}</a></li>
+            <li><a href="sms:{{cellPhone}}">SMS<br/>{{cellPhone}}</a></li>
+            <li><a href="#" class="add-location-btn">Add Location</a></li>
+        </ul>
+    </div>
+</script>
+
 <script src="phonegap.js"></script>
 <script src="lib/jquery-1.8.2.min.js"></script>
 <script src="lib/handlebars.js"></script>
 <script src="js/storage/memory-store.js"></script>
 <script src="js/HomeView.js"></script>
+<script src="js/EmployeeView.js"></script>
 <script src="js/main.js"></script>
 
 </body>
