@@ -181,3 +181,10 @@ h2 {
     padding: 0px;
     margin: 0px;
 }
+
+.employee-image {
+    float:left;
+    margin:10px;
+    width:100px;
+    height:100px;
+}
