@@ -1,8 +1,7 @@
 var app = {
 
     findByName: function() {
-        console.log('findByName');
-        this.store.findByName($('.search-key').val(), function(employees) {
+        this.store.findByName($('.search-key').val()).done(function(employees) {
             var l = employees.length;
             var e;
             $('.employee-list').empty();
@@ -14,7 +13,10 @@ var app = {
     },
 
     initialize: function() {
-        this.store = new MemoryStore();
+        this.store = new WebSqlAdapter();
+        this.store.initialize().done(function() {
+            console.log("Data store initialized");
+        });
         $('.search-key').on('keyup', $.proxy(this.findByName, this));
     }
 
