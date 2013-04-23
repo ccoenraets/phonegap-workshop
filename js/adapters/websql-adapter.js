@@ -1,4 +1,4 @@
-var WebSqlAdapter = function() {
+var WebSqlStore = function() {
 
     this.initialize = function() {
         var deferred = $.Deferred();
