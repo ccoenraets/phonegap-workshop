@@ -1,25 +1,75 @@
-var WebSqlStore = function(successCallback, errorCallback) {
+var WebSqlStore = function() {
 
-    this.initializeDatabase = function(successCallback, errorCallback) {
-        var self = this;
+    this.initialize = function() {
+        var deferred = $.Deferred();
         this.db = window.openDatabase("EmployeeDB", "1.0", "Employee Demo DB", 200000);
         this.db.transaction(
                 function(tx) {
-                    self.createTable(tx);
-                    self.addSampleData(tx);
+                    createTable(tx);
+                    addSampleData(tx);
                 },
                 function(error) {
                     console.log('Transaction error: ' + error);
-                    if (errorCallback) errorCallback();
+                    deferred.reject('Transaction error: ' + error);
                 },
                 function() {
                     console.log('Transaction success');
-                    if (successCallback) successCallback();
+                    deferred.resolve();
                 }
-        )
+        );
+        return deferred.promise();
     }
 
-    this.createTable = function(tx) {
+    this.findByName = function(searchKey) {
+        var deferred = $.Deferred();
+        this.db.transaction(
+            function(tx) {
+
+                var sql = "SELECT e.id, e.firstName, e.lastName, e.title, count(r.id) reportCount " +
+                    "FROM employee e LEFT JOIN employee r ON r.managerId = e.id " +
+                    "WHERE e.firstName || ' ' || e.lastName LIKE ? " +
+                    "GROUP BY e.id ORDER BY e.lastName, e.firstName";
+
+                tx.executeSql(sql, ['%' + searchKey + '%'], function(tx, results) {
+                    var len = results.rows.length,
+                        employees = [],
+                        i = 0;
+                    for (; i < len; i = i + 1) {
+                        employees[i] = results.rows.item(i);
+                    }
+                    deferred.resolve(employees);
+                });
+            },
+            function(error) {
+                deferred.reject("Transaction Error: " + error.message);
+            }
+        );
+        return deferred.promise();
+    }
+
+    this.findById = function(id) {
+        var deferred = $.Deferred();
+        this.db.transaction(
+            function(tx) {
+
+                var sql = "SELECT e.id, e.firstName, e.lastName, e.title, e.city, e.officePhone, e.cellPhone, e.email, e.managerId, m.firstName managerFirstName, m.lastName managerLastName, count(r.id) reportCount " +
+                    "FROM employee e " +
+                    "LEFT JOIN employee r ON r.managerId = e.id " +
+                    "LEFT JOIN employee m ON e.managerId = m.id " +
+                    "WHERE e.id=:id";
+
+                tx.executeSql(sql, [id], function(tx, results) {
+                    deferred.resolve(results.rows.length === 1 ? results.rows.item(0) : null);
+                });
+            },
+            function(error) {
+                deferred.reject("Transaction Error: " + error.message);
+            }
+        );
+        return deferred.promise();
+    };
+
+    var createTable = function(tx) {
         tx.executeSql('DROP TABLE IF EXISTS employee');
         var sql = "CREATE TABLE IF NOT EXISTS employee ( " +
             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -40,7 +90,7 @@ var WebSqlStore = function(successCallback, errorCallback) {
                 });
     }
 
-    this.addSampleData = function(tx, employees) {
+    var addSampleData = function(tx, employees) {
         var employees = [
                 {"id": 1, "firstName": "Ryan", "lastName": "Howard", "title":"Vice President, North East", "managerId": 0, "city":"New York, NY", "cellPhone":"212-999-8888", "officePhone":"212-999-8887", "email":"ryan@dundermifflin.com"},
                 {"id": 2, "firstName": "Michael", "lastName": "Scott", "title":"Regional Manager", "managerId": 1, "city":"Scranton, PA", "cellPhone":"570-865-2536", "officePhone":"570-123-4567", "email":"michael@dundermifflin.com"},
@@ -74,52 +124,5 @@ var WebSqlStore = function(successCallback, errorCallback) {
                     });
         }
     }
-
-    this.findByName = function(searchKey, callback) {
-        this.db.transaction(
-            function(tx) {
-
-                var sql = "SELECT e.id, e.firstName, e.lastName, e.title, count(r.id) reportCount " +
-                    "FROM employee e LEFT JOIN employee r ON r.managerId = e.id " +
-                    "WHERE e.firstName || ' ' || e.lastName LIKE ? " +
-                    "GROUP BY e.id ORDER BY e.lastName, e.firstName";
-
-                tx.executeSql(sql, ['%' + searchKey + '%'], function(tx, results) {
-                    var len = results.rows.length,
-                        employees = [],
-                        i = 0;
-                    for (; i < len; i = i + 1) {
-                        employees[i] = results.rows.item(i);
-                    }
-                    callback(employees);
-                });
-            },
-            function(error) {
-                alert("Transaction Error: " + error.message);
-            }
-        );
-    }
-
-    this.findById = function(id, callback) {
-        this.db.transaction(
-            function(tx) {
-
-                var sql = "SELECT e.id, e.firstName, e.lastName, e.title, e.city, e.officePhone, e.cellPhone, e.email, e.managerId, m.firstName managerFirstName, m.lastName managerLastName, count(r.id) reportCount " +
-                    "FROM employee e " +
-                    "LEFT JOIN employee r ON r.managerId = e.id " +
-                    "LEFT JOIN employee m ON e.managerId = m.id " +
-                    "WHERE e.id=:id";
-
-                tx.executeSql(sql, [id], function(tx, results) {
-                    callback(results.rows.length === 1 ? results.rows.item(0) : null);
-                });
-            },
-            function(error) {
-                alert("Transaction Error: " + error.message);
-            }
-        );
-    };
-
-    this.initializeDatabase(successCallback, errorCallback);
 
 }
